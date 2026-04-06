@@ -649,6 +649,9 @@ const ogTitleEl = document.querySelector('meta[property="og:title"]');
 const ogDescriptionEl = document.querySelector('meta[property="og:description"]');
 const toggleButton = document.getElementById("languageToggle");
 const subjectInput = document.querySelector('input[name="_subject"]');
+const leadForm = document.getElementById("leadCaptureForm");
+const formNote = document.getElementById("formNote");
+const leadSubmitButton = document.getElementById("leadSubmitButton");
 
 const setText = (node, value) => {
     if (node && typeof value === "string") {
@@ -681,6 +684,37 @@ const setCardContent = (nodes, items, selectors) => {
         if (selectors.text) setText(node.querySelector(selectors.text), item.text);
         if (selectors.author) setText(node.querySelector(selectors.author), item.author);
     });
+};
+
+const setFormNoteState = (message, state = "default") => {
+    if (!formNote) return;
+    formNote.classList.remove("is-submitting", "is-success", "is-error");
+    setText(formNote, message);
+    if (state !== "default") {
+        formNote.classList.add("is-" + state);
+    }
+};
+
+const buildLeadWhatsAppMessage = (lang, lead) => {
+    const budgetValue = lead.budget && lead.budget.trim()
+        ? lead.budget.trim()
+        : (lang === "hi" ? "शेयर नहीं किया" : "Not shared");
+
+    if (lang === "hi") {
+        return [
+            "नमस्ते, नई lead details:",
+            "नाम: " + lead.name,
+            "मोबाइल नंबर: " + lead.phone,
+            "बजट: " + budgetValue
+        ].join("\n");
+    }
+
+    return [
+        "Hello, new lead details:",
+        "Name: " + lead.name,
+        "Phone Number: " + lead.phone,
+        "Budget: " + budgetValue
+    ].join("\n");
 };
 
 const applyLanguage = (lang) => {
@@ -775,7 +809,7 @@ const applyLanguage = (lang) => {
     });
     if (subjectInput) subjectInput.value = t.lead.subject;
     setText(document.getElementById("leadSubmitButton"), t.lead.submit);
-    setText(document.querySelector(".form-note"), t.lead.note);
+    setFormNoteState(t.lead.note);
 
     setText(document.querySelector(".location .section-copy .eyebrow"), t.location.eyebrow);
     setText(document.querySelector(".location .section-copy h2"), t.location.title);
@@ -839,6 +873,80 @@ if (toggleButton) {
         const nextLanguage = document.documentElement.lang === "hi" ? "en" : "hi";
         applyLanguage(nextLanguage);
         setStoredLanguage(nextLanguage);
+    });
+}
+
+if (leadForm) {
+    leadForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const lang = document.documentElement.lang === "en" ? "en" : "hi";
+        const formData = new FormData(leadForm);
+        const leadDetails = {
+            name: String(formData.get("name") || "").trim(),
+            phone: String(formData.get("phone") || "").trim(),
+            budget: String(formData.get("budget") || "").trim()
+        };
+
+        const noteMessages = {
+            submitting: lang === "hi" ? "जानकारी भेजी जा रही है..." : "Submitting your details...",
+            success: lang === "hi"
+                ? "Lead email पर भेज दी गई है. वही जानकारी अब WhatsApp में भी खुल रही है."
+                : "The lead has been sent by email. The same details are now opening in WhatsApp.",
+            error: lang === "hi"
+                ? "Lead भेजने में दिक्कत आई. कृपया फिर कोशिश करें या सीधे WhatsApp करें."
+                : "There was a problem sending the lead. Please try again or contact on WhatsApp directly.",
+            button: lang === "hi" ? "भेजा जा रहा है..." : "Submitting..."
+        };
+
+        let whatsappWindow = null;
+        try {
+            whatsappWindow = window.open("", "_blank");
+        } catch (error) {
+            whatsappWindow = null;
+        }
+
+        if (leadSubmitButton) {
+            leadSubmitButton.disabled = true;
+            setText(leadSubmitButton, noteMessages.button);
+        }
+        setFormNoteState(noteMessages.submitting, "submitting");
+
+        try {
+            const response = await fetch(leadForm.action, {
+                method: leadForm.method || "POST",
+                body: formData,
+                headers: {
+                    Accept: "application/json"
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error("Form submission failed");
+            }
+
+            const whatsappMessage = buildLeadWhatsAppMessage(lang, leadDetails);
+            const whatsappUrl = "https://wa.me/918619384178?text=" + encodeURIComponent(whatsappMessage);
+
+            if (whatsappWindow && !whatsappWindow.closed) {
+                whatsappWindow.location.href = whatsappUrl;
+            } else {
+                window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+            }
+
+            leadForm.reset();
+            setFormNoteState(noteMessages.success, "success");
+        } catch (error) {
+            if (whatsappWindow && !whatsappWindow.closed) {
+                whatsappWindow.close();
+            }
+            setFormNoteState(noteMessages.error, "error");
+        } finally {
+            if (leadSubmitButton) {
+                leadSubmitButton.disabled = false;
+                setText(leadSubmitButton, translations[lang].lead.submit);
+            }
+        }
     });
 }
 
