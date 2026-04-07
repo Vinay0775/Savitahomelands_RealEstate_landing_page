@@ -68,6 +68,37 @@ translations.hi.signals = [
         title: "Call, WhatsApp या form से तुरंत inquiry करें."
     }
 ];
+translations.hi.guideLead = {
+    eyebrow: "फ्री PDF गाइड",
+    title: "जयपुर में सुरक्षित निवेश की अल्टीमेट JDA चेकलिस्ट",
+    description: "नाम और WhatsApp नंबर भरें और Savita Homelands की यह free PDF guide तुरंत download करें। इसमें वे 7 सवाल हैं जो हर serious buyer को plot final करने से पहले जरूर पूछने चाहिए।",
+    previewLabel: "PDF के अंदर",
+    previewTitle: "7 safety checks जो हर Jaipur plot buyer को verify करने चाहिए",
+    items: [
+        "क्या प्रोजेक्ट 100% JDA Approved है?",
+        "क्या ज़मीन का 90A हो चुका है?",
+        "क्या प्रोजेक्ट RERA में registered है?",
+        "क्या सरकारी बैंकों से loan मिल रहा है?",
+        "साइट development ground पर कितना हुआ है?",
+        "क्या title clear है और registry बिना रुकावट होगी?",
+        "लोकेशन future growth के लिए कितनी मजबूत है?"
+    ],
+    promise: "यह guide buyers को risky deal, अधूरे कागज़ और गलत फैसले से बचाने के लिए बनाई गई है।",
+    formBadge: "Free Download",
+    formTitle: "Download Free PDF Guide",
+    formDescription: "अपना नाम और WhatsApp नंबर भरें। PDF submit करते ही डाउनलोड हो जाएगी और आपकी inquiry हमारे पास lead के रूप में आ जाएगी।",
+    labels: ["नाम", "WhatsApp नंबर"],
+    placeholders: ["अपना नाम लिखें", "अपना WhatsApp नंबर लिखें"],
+    submit: "PDF डाउनलोड करें",
+    buttonLoading: "PDF तैयार हो रही है...",
+    note: "हम आपकी जानकारी केवल guide share करने और safe plot options बताने के लिए उपयोग करेंगे।",
+    submitting: "आपकी जानकारी भेजी जा रही है...",
+    success: "धन्यवाद! आपकी PDF डाउनलोड हो रही है। अगर download शुरू न हो तो नीचे दिए गए link पर क्लिक करें।",
+    error: "Guide भेजने में दिक्कत आई। कृपया फिर कोशिश करें।",
+    manualLink: "अगर PDF अपने आप डाउनलोड न हो, तो यहां क्लिक करें",
+    subject: "Savita Homelands Jaipur PDF guide lead",
+    fileName: "savita-homelands-jda-checklist-guide.pdf"
+};
 translations.hi.about = {
     eyebrow: "हमारे बारे में",
     title: "Savita Homelands Jaipur के बारे में",
@@ -190,7 +221,24 @@ translations.hi.video = {
     ],
     button: "वीडियो WhatsApp पर मंगवाएं",
     badge: "Featured Site Video",
-    frameTitle: "Site visit walkthrough"
+    frameTitle: "Site visit walkthrough",
+    clips: [
+        {
+            label: "Site Clip",
+            title: "Ground update aur site view",
+            text: "Visit se pehle buyer ko project ki visual feel aur environment samajhne me madad milti hai."
+        },
+        {
+            label: "Project Clip",
+            title: "Plotted site ka ek aur angle",
+            text: "Road access, aas-paas ka area aur development confidence compare karna aur aasaan hota hai."
+        },
+        {
+            label: "Visit Highlight",
+            title: "Trust build karne ke liye short video proof",
+            text: "Mobile users ke liye fast impression aur WhatsApp inquiry ko aur strong banata hai."
+        }
+    ]
 };
 translations.hi.gallery = {
     eyebrow: "वीडियो और इमेज गैलरी",
@@ -312,7 +360,7 @@ translations.hi.footer = {
     headings: ["Savita Homelands Jaipur", "संपर्क", "क्विक लिंक्स"],
     call: "कॉल करें: 8619384178",
     whatsapp: "WhatsApp: 8619384178",
-    quickLinks: ["Approved प्लॉट्स", "गैलरी", "बेस्ट डील्स"],
+    quickLinks: ["Approved प्लॉट्स", "गैलरी", "फ्री PDF गाइड"],
     rights: "Savita Homelands Jaipur. सर्वाधिकार सुरक्षित।"
 };
 translations.hi.whatsapp = {
@@ -387,6 +435,37 @@ translations.en.signals = [
         title: "Call, WhatsApp, or submit the form in minutes."
     }
 ];
+translations.en.guideLead = {
+    eyebrow: "Free PDF Guide",
+    title: "The Ultimate JDA Checklist for Safe Property Investment in Jaipur",
+    description: "Enter your name and WhatsApp number to instantly download Savita Homelands' free PDF guide. It includes the 7 questions every serious buyer should ask before finalizing a plot.",
+    previewLabel: "Inside the PDF",
+    previewTitle: "7 safety checks every Jaipur plot buyer should verify",
+    items: [
+        "Is the project 100% JDA approved?",
+        "Has the land conversion under 90A been completed?",
+        "Is the project registered with RERA?",
+        "Is loan support available from nationalized banks?",
+        "How much on-site development is actually complete?",
+        "Is the title clear and can the registry happen without issues?",
+        "How strong is the location for future growth?"
+    ],
+    promise: "This guide is designed to help buyers avoid risky deals, weak paperwork, and costly mistakes.",
+    formBadge: "Free Download",
+    formTitle: "Download Free PDF Guide",
+    formDescription: "Enter your name and WhatsApp number. The PDF will start downloading right after you submit the form.",
+    labels: ["Name", "WhatsApp Number"],
+    placeholders: ["Enter your name", "Enter your WhatsApp number"],
+    submit: "Download PDF Guide",
+    buttonLoading: "Preparing your PDF...",
+    note: "We use your details only to share the guide and help with safe plot options.",
+    submitting: "Submitting your details...",
+    success: "Thank you. Your PDF is downloading now. If it does not start, use the download link below.",
+    error: "There was a problem sending the guide request. Please try again.",
+    manualLink: "Click here if the PDF does not download automatically",
+    subject: "Savita Homelands Jaipur PDF guide lead",
+    fileName: "savita-homelands-jda-checklist-guide.pdf"
+};
 translations.en.about = {
     eyebrow: "About",
     title: "About Savita Homelands Jaipur",
@@ -509,7 +588,24 @@ translations.en.video = {
     ],
     button: "Get Video on WhatsApp",
     badge: "Featured Site Video",
-    frameTitle: "Site visit walkthrough"
+    frameTitle: "Site visit walkthrough",
+    clips: [
+        {
+            label: "Site Clip",
+            title: "Ground update and site view",
+            text: "Helps buyers understand the visual feel and environment before they book a visit."
+        },
+        {
+            label: "Project Clip",
+            title: "Another angle of the plotted site",
+            text: "Makes it easier to compare road access, surroundings, and development confidence."
+        },
+        {
+            label: "Visit Highlight",
+            title: "Short visual proof for trust building",
+            text: "Creates a stronger first impression on mobile and improves WhatsApp inquiry intent."
+        }
+    ]
 };
 translations.en.gallery = {
     eyebrow: "Video & Image Gallery",
@@ -631,7 +727,7 @@ translations.en.footer = {
     headings: ["Savita Homelands Jaipur", "Contact", "Quick Links"],
     call: "Call: 8619384178",
     whatsapp: "WhatsApp: 8619384178",
-    quickLinks: ["Approved Plots", "Gallery", "Best Deals"],
+    quickLinks: ["Approved Plots", "Gallery", "Free PDF Guide"],
     rights: "Savita Homelands Jaipur. All rights reserved."
 };
 translations.en.whatsapp = {
@@ -648,10 +744,16 @@ const metaDescriptionEl = document.querySelector('meta[name="description"]');
 const ogTitleEl = document.querySelector('meta[property="og:title"]');
 const ogDescriptionEl = document.querySelector('meta[property="og:description"]');
 const toggleButton = document.getElementById("languageToggle");
-const subjectInput = document.querySelector('input[name="_subject"]');
 const leadForm = document.getElementById("leadCaptureForm");
-const formNote = document.getElementById("formNote");
+const leadSubjectInput = leadForm ? leadForm.querySelector('input[name="_subject"]') : null;
+const leadFormNote = document.getElementById("formNote");
 const leadSubmitButton = document.getElementById("leadSubmitButton");
+const guideForm = document.getElementById("guideDownloadForm");
+const guideSubjectInput = guideForm ? guideForm.querySelector('input[name="_subject"]') : null;
+const guideFormNote = document.getElementById("guideFormNote");
+const guideSubmitButton = document.getElementById("guideSubmitButton");
+const guideManualDownload = document.getElementById("guideManualDownload");
+const guideDownloadUrl = "downloads/savita-homelands-jda-checklist-guide.pdf";
 
 const setText = (node, value) => {
     if (node && typeof value === "string") {
@@ -686,13 +788,25 @@ const setCardContent = (nodes, items, selectors) => {
     });
 };
 
-const setFormNoteState = (message, state = "default") => {
-    if (!formNote) return;
-    formNote.classList.remove("is-submitting", "is-success", "is-error");
-    setText(formNote, message);
+const setStatusNoteState = (node, message, state = "default") => {
+    if (!node) return;
+    node.classList.remove("is-submitting", "is-success", "is-error");
+    setText(node, message);
     if (state !== "default") {
-        formNote.classList.add("is-" + state);
+        node.classList.add("is-" + state);
     }
+};
+
+const triggerFileDownload = (url, fileName) => {
+    const link = document.createElement("a");
+    link.href = url;
+    if (fileName) {
+        link.download = fileName;
+    }
+    link.rel = "noopener";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
 };
 
 const buildLeadWhatsAppMessage = (lang, lead) => {
@@ -747,6 +861,31 @@ const applyLanguage = (lang) => {
     setText(document.getElementById("panelExploreButton"), t.hero.exploreButton);
 
     setCardContent(document.querySelectorAll(".signal-chip"), t.signals, { label: ".signal-chip__label", title: "strong" });
+
+    setText(document.querySelector(".guide-download .section-copy .eyebrow"), t.guideLead.eyebrow);
+    setText(document.querySelector(".guide-download .section-copy h2"), t.guideLead.title);
+    setText(document.querySelector(".guide-download .section-copy > p"), t.guideLead.description);
+    setText(document.getElementById("guidePreviewLabel"), t.guideLead.previewLabel);
+    setText(document.getElementById("guidePreviewTitle"), t.guideLead.previewTitle);
+    document.querySelectorAll(".guide-list li").forEach((item, index) => setText(item, t.guideLead.items[index]));
+    setText(document.getElementById("guidePromiseText"), t.guideLead.promise);
+    setText(document.getElementById("guideFormBadge"), t.guideLead.formBadge);
+    setText(document.getElementById("guideFormTitle"), t.guideLead.formTitle);
+    setText(document.getElementById("guideFormDescription"), t.guideLead.formDescription);
+    if (guideForm) {
+        guideForm.querySelectorAll(".form-group label").forEach((label, index) => setText(label, t.guideLead.labels[index]));
+    }
+    [document.getElementById("guide-name"), document.getElementById("guide-whatsapp")].forEach((input, index) => {
+        if (input) input.placeholder = t.guideLead.placeholders[index];
+    });
+    if (guideSubjectInput) guideSubjectInput.value = t.guideLead.subject;
+    setText(guideSubmitButton, t.guideLead.submit);
+    setStatusNoteState(guideFormNote, t.guideLead.note);
+    if (guideManualDownload) {
+        setText(guideManualDownload, t.guideLead.manualLink);
+        guideManualDownload.setAttribute("download", t.guideLead.fileName);
+    }
+
     setText(document.querySelector("#about .section-copy .eyebrow"), t.about.eyebrow);
     setText(document.querySelector("#about .section-copy h2"), t.about.title);
     document.querySelectorAll("#about .section-copy p").forEach((paragraph, index) => setText(paragraph, t.about.paragraphs[index]));
@@ -780,6 +919,7 @@ const applyLanguage = (lang) => {
     setText(document.getElementById("videoWhatsAppButton"), t.video.button);
     setText(document.querySelector(".video-frame__header .pill"), t.video.badge);
     setText(document.querySelector(".video-frame__header h3"), t.video.frameTitle);
+    setCardContent(document.querySelectorAll(".video-clip-card"), t.video.clips, { label: ".pill", title: "h4", text: "p" });
 
     setText(document.querySelector("#gallery .section-heading .eyebrow"), t.gallery.eyebrow);
     setText(document.querySelector("#gallery .section-heading h2"), t.gallery.title);
@@ -803,13 +943,15 @@ const applyLanguage = (lang) => {
     setText(document.querySelector(".lead-section .section-copy > p"), t.lead.description);
     setCardContent(document.querySelectorAll(".contact-highlights article"), t.lead.highlights, { title: "strong", text: "p" });
     setText(document.getElementById("leadWhatsAppButton"), t.lead.whatsappButton);
-    document.querySelectorAll(".form-group label").forEach((label, index) => setText(label, t.lead.labels[index]));
+    if (leadForm) {
+        leadForm.querySelectorAll(".form-group label").forEach((label, index) => setText(label, t.lead.labels[index]));
+    }
     [document.getElementById("name"), document.getElementById("phone"), document.getElementById("budget")].forEach((input, index) => {
         if (input) input.placeholder = t.lead.placeholders[index];
     });
-    if (subjectInput) subjectInput.value = t.lead.subject;
+    if (leadSubjectInput) leadSubjectInput.value = t.lead.subject;
     setText(document.getElementById("leadSubmitButton"), t.lead.submit);
-    setFormNoteState(t.lead.note);
+    setStatusNoteState(leadFormNote, t.lead.note);
 
     setText(document.querySelector(".location .section-copy .eyebrow"), t.location.eyebrow);
     setText(document.querySelector(".location .section-copy h2"), t.location.title);
@@ -876,6 +1018,54 @@ if (toggleButton) {
     });
 }
 
+if (guideForm) {
+    guideForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const lang = document.documentElement.lang === "en" ? "en" : "hi";
+        const guideCopy = translations[lang].guideLead;
+        const formData = new FormData(guideForm);
+
+        if (guideSubmitButton) {
+            guideSubmitButton.disabled = true;
+            setText(guideSubmitButton, guideCopy.buttonLoading);
+        }
+        if (guideManualDownload) {
+            guideManualDownload.hidden = true;
+        }
+        setStatusNoteState(guideFormNote, guideCopy.submitting, "submitting");
+
+        try {
+            const response = await fetch(guideForm.action, {
+                method: guideForm.method || "POST",
+                body: formData,
+                headers: {
+                    Accept: "application/json"
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error("Guide form submission failed");
+            }
+
+            triggerFileDownload(guideDownloadUrl, guideCopy.fileName);
+            guideForm.reset();
+
+            if (guideManualDownload) {
+                guideManualDownload.hidden = false;
+            }
+            setStatusNoteState(guideFormNote, guideCopy.success, "success");
+        } catch (error) {
+            setStatusNoteState(guideFormNote, guideCopy.error, "error");
+        } finally {
+            if (guideSubmitButton) {
+                guideSubmitButton.disabled = false;
+                setText(guideSubmitButton, guideCopy.submit);
+            }
+        }
+    });
+}
+
 if (leadForm) {
     leadForm.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -910,7 +1100,7 @@ if (leadForm) {
             leadSubmitButton.disabled = true;
             setText(leadSubmitButton, noteMessages.button);
         }
-        setFormNoteState(noteMessages.submitting, "submitting");
+        setStatusNoteState(leadFormNote, noteMessages.submitting, "submitting");
 
         try {
             const response = await fetch(leadForm.action, {
@@ -935,12 +1125,12 @@ if (leadForm) {
             }
 
             leadForm.reset();
-            setFormNoteState(noteMessages.success, "success");
+            setStatusNoteState(leadFormNote, noteMessages.success, "success");
         } catch (error) {
             if (whatsappWindow && !whatsappWindow.closed) {
                 whatsappWindow.close();
             }
-            setFormNoteState(noteMessages.error, "error");
+            setStatusNoteState(leadFormNote, noteMessages.error, "error");
         } finally {
             if (leadSubmitButton) {
                 leadSubmitButton.disabled = false;

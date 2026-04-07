@@ -49,6 +49,7 @@ body.lang-hi {
 
 body.lang-hi h1,
 body.lang-hi h2,
+body.lang-hi .guide-form-card h3,
 body.lang-hi .comparison-card__head h3,
 body.lang-hi .final-cta__card h2 {
     font-family: "Noto Serif Devanagari", "Noto Sans Devanagari", sans-serif;
@@ -1031,6 +1032,51 @@ body.lang-hi .hero__lead {
     transition: transform 0.9s ease, filter 0.9s ease;
 }
 
+.video-clip-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.video-clip-card {
+    overflow: hidden;
+    border: 1px solid rgba(16, 35, 58, 0.08);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.32s ease, box-shadow 0.32s ease, border-color 0.32s ease;
+}
+
+.video-clip-card__media {
+    overflow: hidden;
+    background: #091525;
+}
+
+.video-clip-card__media video {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    transform: scale(1.02);
+    transition: transform 0.9s ease, filter 0.9s ease;
+}
+
+.video-clip-card__body {
+    display: grid;
+    gap: 0.55rem;
+    padding: 1rem;
+}
+
+.video-clip-card__body h4 {
+    color: var(--ink);
+    font-size: 1.06rem;
+}
+
+.video-clip-card__body p {
+    color: var(--ink-soft);
+    font-size: 0.94rem;
+}
+
 .pill {
     display: inline-flex;
     align-items: center;
@@ -1201,6 +1247,121 @@ body.lang-hi .hero__lead {
 .testimonial-card strong {
     display: inline-block;
     margin-top: 1rem;
+}
+
+.guide-download {
+    padding-top: clamp(4rem, 8vw, 5.25rem);
+}
+
+.guide-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 2rem;
+    align-items: center;
+}
+
+.guide-preview {
+    margin-top: 1.6rem;
+    padding: 1.45rem;
+    border: 1px solid rgba(16, 35, 58, 0.09);
+    border-radius: 30px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 250, 242, 0.96)),
+        rgba(255, 255, 255, 0.92);
+    box-shadow: var(--shadow-soft);
+}
+
+.guide-preview__head {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.guide-preview__head strong {
+    font-size: 1.15rem;
+    line-height: 1.45;
+    color: var(--navy);
+}
+
+.guide-list {
+    counter-reset: guide-item;
+    display: grid;
+    gap: 0.82rem;
+    margin: 1.2rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.guide-list li {
+    position: relative;
+    min-height: 3.7rem;
+    padding: 0.9rem 1rem 0.9rem 4rem;
+    border: 1px solid rgba(16, 35, 58, 0.08);
+    border-radius: 20px;
+    color: var(--navy);
+    background: rgba(255, 255, 255, 0.86);
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.guide-list li::before {
+    counter-increment: guide-item;
+    content: counter(guide-item);
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    display: grid;
+    place-items: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--maroon), var(--navy));
+    box-shadow: 0 12px 22px rgba(16, 35, 58, 0.18);
+    transform: translateY(-50%);
+}
+
+.guide-promise {
+    margin-top: 1rem;
+    padding: 1rem 1.1rem;
+    border-left: 4px solid var(--gold);
+    border-radius: 0 18px 18px 0;
+    color: var(--ink-soft);
+    background: rgba(208, 163, 71, 0.12);
+}
+
+.guide-form-card {
+    padding: 1.7rem;
+    border: 1px solid rgba(16, 35, 58, 0.08);
+    border-radius: 32px;
+    background: #ffffff;
+    box-shadow: var(--shadow);
+}
+
+.guide-form-card h3 {
+    margin-top: 0.95rem;
+    font-size: clamp(1.6rem, 3vw, 2.05rem);
+    line-height: 1.2;
+}
+
+.guide-form-card > p {
+    margin-top: 0.7rem;
+    color: var(--ink-soft);
+}
+
+.guide-manual-link {
+    display: inline-flex;
+    margin-top: 1rem;
+    color: var(--maroon);
+    font-weight: 700;
+    transition: color 0.25s ease;
+}
+
+.guide-manual-link:hover {
+    color: var(--maroon-strong);
+}
+
+.guide-manual-link[hidden] {
+    display: none;
 }
 
 .lead-section {
@@ -1395,12 +1556,15 @@ body.lang-hi .hero__lead {
 .risk-card:hover,
 .proof-card:hover,
 .testimonial-card:hover,
+.guide-preview:hover,
+.guide-form-card:hover,
 .lead-card:hover,
 .map-card:hover,
 .contact-highlights article:hover,
 .location-point:hover,
 .comparison-card:hover,
-.video-frame:hover {
+.video-frame:hover,
+.video-clip-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 24px 54px rgba(18, 30, 47, 0.12);
 }
@@ -1408,6 +1572,7 @@ body.lang-hi .hero__lead {
 .hero__panel:hover .hero__panel-media img,
 .showcase-card:hover img,
 .video-frame:hover .video-frame__media video,
+.video-clip-card:hover .video-clip-card__media video,
 .media-card:hover .media-card__visual img,
 .media-card:hover .media-card__visual video {
     transform: scale(1.08);
@@ -1448,12 +1613,17 @@ body.lang-hi .hero__lead {
 @media (max-width: 1080px) {
     .hero__grid,
     .section-grid,
+    .guide-grid,
     .lead-grid {
         grid-template-columns: 1fr;
         gap: 1.6rem;
     }
 
     .showcase-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .video-clip-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
@@ -1470,6 +1640,8 @@ body.lang-hi .hero__lead {
     .hero__content,
     .hero__panel,
     .section-copy,
+    .guide-form-card,
+    .guide-preview,
     .lead-card,
     .map-card,
     .video-frame {
@@ -1477,6 +1649,8 @@ body.lang-hi .hero__lead {
     }
 
     .hero__panel,
+    .guide-form-card,
+    .guide-preview,
     .lead-card,
     .map-card,
     .video-frame {
@@ -1511,7 +1685,9 @@ body.lang-hi .hero__lead {
     .hero__panel-actions,
     .benefit-list,
     .testimonial-grid,
-    .footer-grid {
+    .guide-grid,
+    .footer-grid,
+    .video-clip-grid {
         grid-template-columns: 1fr;
     }
 
@@ -1526,6 +1702,7 @@ body.lang-hi .hero__lead {
     .hero__content,
     .hero__panel,
     .section-copy,
+    .guide-form-card,
     .section-heading,
     .video-frame__header,
     .map-card__caption,
@@ -1549,6 +1726,7 @@ body.lang-hi .hero__lead {
     .section-copy p,
     .section-heading p,
     .hero__panel-head p,
+    .guide-form-card > p,
     .final-cta__card p {
         margin-inline: auto;
     }
@@ -1564,6 +1742,7 @@ body.lang-hi .hero__lead {
     .contact-highlights article,
     .location-point,
     .video-point,
+    .video-clip-card__body,
     .showcase-card__body,
     .media-card__body {
         text-align: center;
@@ -1572,6 +1751,15 @@ body.lang-hi .hero__lead {
     .feature-card__icon,
     .risk-card__icon {
         margin-inline: auto;
+    }
+
+    .guide-preview__head {
+        justify-items: center;
+        text-align: center;
+    }
+
+    .guide-list {
+        text-align: left;
     }
 
     .section-copy .btn,
