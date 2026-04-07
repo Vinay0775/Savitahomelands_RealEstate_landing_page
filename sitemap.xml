@@ -4,15 +4,18 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
 
 
 <url>
   <loc>https://savitahomelands-realestate.pages.dev/</loc>
-  <lastmod>2026-04-07T06:49:51+00:00</lastmod>
-  priority="1.0"
-  changefreq="daily"
-  
+  <lastmod>2026-04-07T07:11:39+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://savitahomelands-realestate.pages.dev/downloads/savita-homelands-jda-checklist-guide.pdf</loc>
+  <lastmod>2026-04-07T07:11:39+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 
 
