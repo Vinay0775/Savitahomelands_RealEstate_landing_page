@@ -979,6 +979,26 @@ body.lang-hi .hero__lead {
     background: linear-gradient(180deg, rgba(16, 35, 58, 0.05), rgba(255, 255, 255, 0));
 }
 
+.video-layout {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    grid-template-areas:
+        "copy frame"
+        "clips clips";
+    row-gap: 1.25rem;
+}
+
+.video-layout > .section-copy {
+    grid-area: copy;
+}
+
+.video-layout > .video-frame {
+    grid-area: frame;
+}
+
+.video-layout > .video-clip-grid {
+    grid-area: clips;
+}
+
 .video-points {
     display: grid;
     gap: 1rem;
@@ -1035,12 +1055,16 @@ body.lang-hi .hero__lead {
 .video-clip-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
+    gap: 1.1rem;
+    margin-top: 0;
+    align-items: stretch;
 }
 
 .video-clip-card {
+    display: grid;
+    grid-template-rows: auto 1fr;
     overflow: hidden;
+    min-height: 100%;
     border: 1px solid rgba(16, 35, 58, 0.08);
     border-radius: 24px;
     background: rgba(255, 255, 255, 0.88);
@@ -1064,17 +1088,19 @@ body.lang-hi .hero__lead {
 .video-clip-card__body {
     display: grid;
     gap: 0.55rem;
-    padding: 1rem;
+    padding: 1.1rem 1.1rem 1.2rem;
 }
 
 .video-clip-card__body h4 {
     color: var(--ink);
-    font-size: 1.06rem;
+    font-size: clamp(1.06rem, 1.2vw, 1.24rem);
+    line-height: 1.45;
 }
 
 .video-clip-card__body p {
     color: var(--ink-soft);
     font-size: 0.94rem;
+    line-height: 1.65;
 }
 
 .pill {
@@ -1623,8 +1649,20 @@ body.lang-hi .hero__lead {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    .video-layout {
+        grid-template-areas:
+            "copy"
+            "frame"
+            "clips";
+        row-gap: 1.35rem;
+    }
+
     .video-clip-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .video-clip-card:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
     }
 
     .footer-grid {
@@ -1689,6 +1727,14 @@ body.lang-hi .hero__lead {
     .footer-grid,
     .video-clip-grid {
         grid-template-columns: 1fr;
+    }
+
+    .video-layout {
+        grid-template-areas:
+            "copy"
+            "frame"
+            "clips";
+        row-gap: 1.35rem;
     }
 
     .hero__cta {
@@ -1760,6 +1806,10 @@ body.lang-hi .hero__lead {
 
     .guide-list {
         text-align: left;
+    }
+
+    .video-clip-card:last-child:nth-child(odd) {
+        grid-column: auto;
     }
 
     .section-copy .btn,
