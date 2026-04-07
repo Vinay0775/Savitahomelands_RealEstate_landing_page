@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://savitahomelands-realestate.pages.dev/sitemap.xml
