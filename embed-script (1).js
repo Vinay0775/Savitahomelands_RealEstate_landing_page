@@ -56,7 +56,7 @@
             footerNote: 'Hindi, English aur Hinglish me instant support available.',
             toolbarNote: 'Hindi | English | Hinglish',
             inputPlaceholder: 'Apna sawal type karein...',
-            teaser: 'Ask in Hindi, English or Hinglish',
+            teaser: 'Ask me',
             quick: {
                 approved: 'JDA plots',
                 ajmer: 'Ajmer Road',
@@ -97,7 +97,7 @@
             footerNote: 'हिंदी, English और Hinglish में तुरंत सहायता उपलब्ध है।',
             toolbarNote: 'हिंदी | English | Hinglish',
             inputPlaceholder: 'अपना सवाल लिखें...',
-            teaser: 'हिंदी, English या Hinglish में पूछें',
+            teaser: 'Ask me',
             quick: {
                 approved: 'JDA प्लॉट्स',
                 ajmer: 'अजमेर रोड',
@@ -138,7 +138,7 @@
             footerNote: 'Instant support available in Hindi, English, and Hinglish.',
             toolbarNote: 'Hindi | English | Hinglish',
             inputPlaceholder: 'Type your question...',
-            teaser: 'Ask in Hindi, English or Hinglish',
+            teaser: 'Ask me',
             quick: {
                 approved: 'Approved plots',
                 ajmer: 'Ajmer Road',
