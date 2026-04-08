@@ -1,0 +1,391 @@
+/**
+ * ============================================================
+ *  Savita Homelands AI Chat Widget - Embed Script
+ *  ============================================================
+ *  एक ही लाइन कोड से किसी भी वेबसाइट पर AI चैट विजेट जोड़ें।
+ *
+ *  इस्तेमाल:
+ *    <script>
+ *      window.SH_CHAT_API_URL = 'https://your-app.vercel.app';
+ *    </script>
+ *    <script src="https://your-cdn.com/embed-script.js"></script>
+ *
+ *  या डायरेक्ट:
+ *    <script>
+ *      window.SH_CHAT_API_URL = 'https://your-app.vercel.app';
+ *      // फिर इस फाइल का पूरा कोड यहाँ पेस्ट करें
+ *    </script>
+ * ============================================================
+ */
+(function() {
+    'use strict';
+
+    // ============================================================
+    // CONFIG
+    // ============================================================
+    var API_URL = window.SH_CHAT_API_URL || 'https://YOUR-DEPLOYED-URL.vercel.app';
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    var chatMessages = [];
+    var isOpen = false;
+    var hasWelcomed = false;
+    var isTyping = false;
+    var widgetId = 'sh-widget-' + Math.random().toString(36).substring(2, 8);
+
+    // ============================================================
+    // INJECT STYLES
+    // ============================================================
+    var styles = document.createElement('style');
+    styles.textContent = '\
+.sh-wf{position:fixed;bottom:24px;right:24px;width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#059669 0%,#0d9488 100%);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(5,150,105,0.45),0 0 0 0 rgba(5,150,105,0.5);z-index:99999;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;animation:shPulse 2.5s ease-in-out infinite;font-family:inherit}\
+.sh-wf:hover{transform:scale(1.08);box-shadow:0 8px 32px rgba(5,150,105,0.55)}\
+.sh-wf.sh-open{animation:none;background:linear-gradient(135deg,#dc2626,#ef4444);box-shadow:0 6px 24px rgba(220,38,38,0.4)}\
+@keyframes shPulse{0%{box-shadow:0 6px 24px rgba(5,150,105,0.45),0 0 0 0 rgba(5,150,105,0.5)}70%{box-shadow:0 6px 24px rgba(5,150,105,0.45),0 0 0 16px rgba(5,150,105,0)}100%{box-shadow:0 6px 24px rgba(5,150,105,0.45),0 0 0 0 rgba(5,150,105,0)}}\
+.sh-wf svg{width:30px;height:30px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}\
+.sh-wf .sh-x-close{display:none}.sh-wf.sh-open .sh-x-chat{display:none}.sh-wf.sh-open .sh-x-close{display:block}\
+.sh-wb{position:absolute;top:-4px;right:-4px;min-width:22px;height:22px;background:#ef4444;color:#fff;font-size:12px;font-weight:700;border-radius:11px;display:flex;align-items:center;justify-content:center;padding:0 6px;border:2px solid #fff;animation:shBounce .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 2px 8px rgba(239,68,68,0.4)}\
+.sh-wb.sh-hide{display:none}\
+@keyframes shBounce{0%{transform:scale(0)}50%{transform:scale(1.3)}100%{transform:scale(1)}}\
+.sh-wc{position:fixed;bottom:100px;right:24px;width:390px;height:520px;max-height:calc(100vh - 130px);background:#fff;border-radius:20px;box-shadow:0 12px 48px rgba(0,0,0,0.18),0 0 0 1px rgba(0,0,0,0.05);display:flex;flex-direction:column;overflow:hidden;z-index:99998;transform:scale(0) translateY(20px);opacity:0;pointer-events:none;transform-origin:bottom right;transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .25s;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Devanagari",Arial,sans-serif}\
+.sh-wc.sh-open{transform:scale(1) translateY(0);opacity:1;pointer-events:auto}\
+.sh-wh{background:linear-gradient(135deg,#059669 0%,#0d9488 50%,#0f766e 100%);color:#fff;padding:16px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0;position:relative;overflow:hidden}\
+.sh-wh::before{content:"";position:absolute;top:-30%;right:-20%;width:120px;height:120px;background:rgba(255,255,255,0.07);border-radius:50%}\
+.sh-wh::after{content:"";position:absolute;bottom:-40%;left:-10%;width:80px;height:80px;background:rgba(255,255,255,0.05);border-radius:50%}\
+.sh-wa{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid rgba(255,255,255,0.3)}\
+.sh-wa svg{width:24px;height:24px;fill:#fff}\
+.sh-wnfo{flex:1;position:relative;z-index:1}\
+.sh-wnfo h3{font-size:.95rem;font-weight:700;margin:0 0 2px;text-shadow:0 1px 2px rgba(0,0,0,0.1)}\
+.sh-wst{font-size:.75rem;opacity:.9;display:flex;align-items:center;gap:5px}\
+.sh-wsd{width:7px;height:7px;background:#86efac;border-radius:50%;animation:shStP 1.5s ease-in-out infinite}\
+@keyframes shStP{0%,100%{opacity:1}50%{opacity:.4}}\
+.sh-wcx{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.15);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;position:relative;z-index:1}\
+.sh-wcx:hover{background:rgba(255,255,255,0.3)}\
+.sh-wcx svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round}\
+.sh-wm{flex:1;overflow-y:auto;padding:16px;background:linear-gradient(180deg,#f0fdf4 0%,#fff 40%);scroll-behavior:smooth}\
+.sh-wm::-webkit-scrollbar{width:5px}.sh-wm::-webkit-scrollbar-track{background:transparent}.sh-wm::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:10px}\
+.sh-msg{display:flex;margin-bottom:12px;animation:shMsgIn .35s cubic-bezier(.34,1.56,.64,1)}\
+.sh-msg.sh-usr{flex-direction:row-reverse}\
+@keyframes shMsgIn{0%{opacity:0;transform:translateY(12px) scale(0.95)}100%{opacity:1;transform:translateY(0) scale(1)}}\
+.sh-mb{max-width:82%;padding:10px 14px;font-size:.875rem;line-height:1.55;word-wrap:break-word}\
+.sh-msg:not(.sh-usr) .sh-mb{background:#fff;color:#1f2937;border-radius:4px 18px 18px 18px;box-shadow:0 2px 8px rgba(0,0,0,0.06),0 0 0 1px rgba(0,0,0,0.04)}\
+.sh-msg.sh-usr .sh-mb{background:linear-gradient(135deg,#059669,#0d9488);color:#fff;border-radius:18px 4px 18px 18px;box-shadow:0 2px 8px rgba(5,150,105,0.2)}\
+.sh-mt{font-size:.65rem;color:#9ca3af;margin-top:4px;padding:0 4px}\
+.sh-msg.sh-usr .sh-mt{text-align:right;color:rgba(255,255,255,0.7)}\
+.sh-ws{text-align:center;padding:8px 0 12px}\
+.sh-wsi{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#059669,#0d9488);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;box-shadow:0 4px 16px rgba(5,150,105,0.3)}\
+.sh-wsi svg{width:28px;height:28px;fill:#fff}\
+.sh-ws p{font-size:.8rem;color:#6b7280;max-width:280px;margin:0 auto;line-height:1.5}\
+.sh-wt{display:none;align-items:center;gap:8px;padding:8px 16px;margin-bottom:12px;animation:shMsgIn .35s ease}\
+.sh-wt.sh-on{display:flex}\
+.sh-wta{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#059669,#0d9488);display:flex;align-items:center;justify-content:center;flex-shrink:0}\
+.sh-wta svg{width:16px;height:16px;fill:#fff}\
+.sh-wtd{display:flex;gap:4px;padding:10px 14px;background:#fff;border-radius:4px 18px 18px 18px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}\
+.sh-wtd span{width:7px;height:7px;background:#059669;border-radius:50%;animation:shTypB 1.4s ease-in-out infinite}\
+.sh-wtd span:nth-child(2){animation-delay:.15s}.sh-wtd span:nth-child(3){animation-delay:.3s}\
+@keyframes shTypB{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-6px);opacity:1}}\
+.sh-wqr{display:flex;flex-wrap:wrap;gap:8px;padding:8px 16px 4px;flex-shrink:0;background:#f9fafb;border-top:1px solid #f3f4f6}\
+.sh-qrb{padding:7px 14px;border:1.5px solid #d1fae5;background:#fff;color:#065f46;font-size:.78rem;font-weight:500;border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:inherit}\
+.sh-qrb:hover{background:#059669;color:#fff;border-color:#059669;box-shadow:0 2px 8px rgba(5,150,105,0.25);transform:translateY(-1px)}\
+.sh-qrb.sh-ph{border-color:#fde68a;color:#92400e;background:#fffbeb}\
+.sh-qrb.sh-ph:hover{background:#f59e0b;color:#fff;border-color:#f59e0b}\
+.sh-wia{padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;display:flex;align-items:center;gap:10px;flex-shrink:0}\
+.sh-win{flex:1;padding:10px 16px;border:1.5px solid #e5e7eb;border-radius:24px;font-size:.875rem;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s;background:#fff;color:#1f2937}\
+.sh-win:focus{border-color:#059669;box-shadow:0 0 0 3px rgba(5,150,105,0.12)}\
+.sh-win::placeholder{color:#9ca3af}\
+.sh-wsb{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#059669,#0d9488);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}\
+.sh-wsb:hover{transform:scale(1.08);box-shadow:0 4px 12px rgba(5,150,105,0.35)}\
+.sh-wsb:active{transform:scale(.95)}\
+.sh-wsb svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}\
+.sh-wsb.sh-dis{opacity:.5;pointer-events:none}\
+.sh-wft{padding:6px 14px;text-align:center;font-size:.68rem;color:#9ca3af;background:#f9fafb;flex-shrink:0;border-top:1px solid #f3f4f6}\
+.sh-wft a{color:#059669;text-decoration:none;font-weight:500}.sh-wft a:hover{text-decoration:underline}\
+.sh-slb{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;max-width:82%;padding:8px 16px;margin-top:8px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;border-radius:12px;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit;animation:shMsgIn .35s cubic-bezier(.34,1.56,.64,1)}\
+.sh-slb:hover{box-shadow:0 4px 12px rgba(245,158,11,0.4);transform:translateY(-1px)}\
+.sh-slb svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2}\
+.sh-slb.sh-ok{background:linear-gradient(135deg,#10b981,#059669);pointer-events:none}\
+.sh-er{background:#fef2f2;color:#dc2626;padding:8px 14px;border-radius:12px;font-size:.8rem;text-align:center;margin:8px 16px;animation:shMsgIn .35s ease;border:1px solid #fecaca}\
+.sh-lo{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:999999;display:none;align-items:center;justify-content:center;animation:shFade .25s ease}\
+.sh-lo.sh-on{display:flex}\
+@keyframes shFade{0%{opacity:0}100%{opacity:1}}\
+.sh-lm{background:#fff;border-radius:20px;padding:28px 24px;width:340px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,0.25);animation:shModUp .35s cubic-bezier(.34,1.56,.64,1)}\
+@keyframes shModUp{0%{opacity:0;transform:translateY(30px) scale(0.95)}100%{opacity:1;transform:translateY(0) scale(1)}}\
+.sh-lm h4{font-size:1.05rem;color:#065f46;margin:0 0 4px;font-weight:700}\
+.sh-lm p{font-size:.8rem;color:#6b7280;margin:0 0 18px}\
+.sh-lf{margin-bottom:14px}\
+.sh-lf label{display:block;font-size:.78rem;font-weight:600;color:#374151;margin-bottom:5px}\
+.sh-lf input{width:100%;padding:9px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.875rem;font-family:inherit;outline:none;transition:border-color .2s;color:#1f2937}\
+.sh-lf input:focus{border-color:#059669;box-shadow:0 0 0 3px rgba(5,150,105,0.12)}\
+.sh-lsb{width:100%;padding:11px;background:linear-gradient(135deg,#059669,#0d9488);color:#fff;border:none;border-radius:12px;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}\
+.sh-lsb:hover{box-shadow:0 4px 16px rgba(5,150,105,0.35);transform:translateY(-1px)}\
+.sh-lcb{width:100%;padding:9px;background:none;color:#6b7280;border:none;font-size:.82rem;cursor:pointer;margin-top:6px;font-family:inherit}\
+.sh-lcb:hover{color:#374151}\
+@media(max-width:480px){.sh-wc{bottom:0;right:0;left:0;width:100%;height:100vh;max-height:100vh;border-radius:0;transform-origin:bottom center}.sh-wf{bottom:18px;right:18px;width:58px;height:58px}}\
+@media(min-width:481px) and (max-width:768px){.sh-wc{width:360px;height:480px;right:16px;bottom:90px}}\
+';
+    document.head.appendChild(styles);
+
+    // ============================================================
+    // INJECT HTML
+    // ============================================================
+    var container = document.createElement('div');
+    container.id = widgetId;
+    container.innerHTML = '\
+<button class="sh-wf" aria-label="AI असिस्टेंट से चैट करें">\
+<svg class="sh-x-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><path d="M9 10h.01M15 10h.01"/></svg>\
+<svg class="sh-x-close" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>\
+<span class="sh-wb">1</span>\
+</button>\
+<div class="sh-wc">\
+<div class="sh-wh">\
+<div class="sh-wa"><svg viewBox="0 0 24 24"><path d="M12 2L4 6v6c0 5 3.41 9.74 8 11 4.59-1.26 8-6 8-11V6l-8-4zm0 2.19 6 3v4.81c0 4.12-2.71 8.07-6 9.36-3.29-1.29-6-5.24-6-9.36V7.19l6-3Z"/></svg></div>\
+<div class="sh-wnfo"><h3>Savita Homelands AI</h3><div class="sh-wst"><span class="sh-wsd"></span><span class="sh-wtx">ऑनलाइन • तुरंत जवाब देगी</span></div></div>\
+<button class="sh-wcx" aria-label="बंद करें"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>\
+</div>\
+<div class="sh-wm">\
+<div class="sh-ws"><div class="sh-wsi"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><p>JDA Approved प्लॉट्स की जानकारी पाएं। आपके सवालों का जवाब मिलेगा।</p></div>\
+</div>\
+<div class="sh-wt"><div class="sh-wta"><svg viewBox="0 0 24 24"><path d="M12 2L4 6v6c0 5 3.41 9.74 8 11 4.59-1.26 8-6 8-11V6l-8-4zm0 2.19 6 3v4.81c0 4.12-2.71 8.07-6 9.36-3.29-1.29-6-5.24-6-9.36V7.19l6-3Z"/></svg></div><div class="sh-wtd"><span></span><span></span><span></span></div></div>\
+<div class="sh-wqr">\
+<button class="sh-qrb" data-q="JDA Approved प्लॉट्स के बारे में बताइए">JDA Approved Plots</button>\
+<button class="sh-qrb" data-q="अजमेर रोड पर प्लॉट्स की जानकारी दीजिए">Ajmer Road Projects</button>\
+<button class="sh-qrb" data-q="10 से 20 लाख बजट में प्लॉट्स बताइए">Budget 10-20 Lakh</button>\
+<button class="sh-qrb" data-q="फ्री साइट विज़िट कैसे बुक करें?">Free Site Visit</button>\
+<button class="sh-qrb" data-q="प्लॉट पर लोन कैसे मिलेगा? कितना लोन मिलता है?">Loan Information</button>\
+<button class="sh-qrb sh-ph" data-call="1">📞 कॉल: 8619384178</button>\
+</div>\
+<div class="sh-wia">\
+<input type="text" class="sh-win" placeholder="अपना संदेश लिखें..." autocomplete="off"/>\
+<button class="sh-wsb" aria-label="भेजें"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>\
+</div>\
+<div class="sh-wft">Powered by <a href="https://savitahomelands-realestate.pages.dev" target="_blank" rel="noopener">Savita Homelands Jaipur</a></div>\
+</div>\
+<div class="sh-lo">\
+<div class="sh-lm">\
+<h4>📋 लीड सेव करें</h4>\
+<p>ग्राहक की जानकारी सेव करें ताकि टीम बाद में संपर्क कर सके।</p>\
+<div class="sh-lf"><label>नाम *</label><input type="text" class="sh-ln" placeholder="ग्राहक का नाम"/></div>\
+<div class="sh-lf"><label>फ़ोन नंबर *</label><input type="tel" class="sh-lp" placeholder="मोबाइल नंबर"/></div>\
+<div class="sh-lf"><label>बजट (वैकल्पिक)</label><input type="text" class="sh-lg" placeholder="जैसे: 15-20 लाख"/></div>\
+<div class="sh-lf"><label>पसंदीदा लोकेशन (वैकल्पिक)</label><input type="text" class="sh-ll" placeholder="जैसे: अजमेर रोड"/></div>\
+<button class="sh-lsb">✅ लीड सेव करें</button>\
+<button class="sh-lcb">रद्द करें</button>\
+</div>\
+</div>';
+    document.body.appendChild(container);
+
+    // ============================================================
+    // DOM REFS
+    // ============================================================
+    var fab = container.querySelector('.sh-wf');
+    var chatWin = container.querySelector('.sh-wc');
+    var closeBtn = container.querySelector('.sh-wcx');
+    var msgArea = container.querySelector('.sh-wm');
+    var inp = container.querySelector('.sh-win');
+    var sendBtn = container.querySelector('.sh-wsb');
+    var badgeEl = container.querySelector('.sh-wb');
+    var typEl = container.querySelector('.sh-wt');
+    var stTx = container.querySelector('.sh-wtx');
+    var welSec = container.querySelector('.sh-ws');
+    var leadOvl = container.querySelector('.sh-lo');
+    var leadSub = container.querySelector('.sh-lsb');
+    var leadCnl = container.querySelector('.sh-lcb');
+
+    // ============================================================
+    // HELPERS
+    // ============================================================
+    function escHtml(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+    function timeStr() {
+        var d = new Date(), h = d.getHours(), m = d.getMinutes(), ap = h >= 12 ? 'PM' : 'AM';
+        h = h % 12 || 12;
+        return h + ':' + (m < 10 ? '0' : '') + m + ' ' + ap;
+    }
+
+    function scrollDown() { setTimeout(function() { msgArea.scrollTop = msgArea.scrollHeight; }, 50); }
+
+    function toggleChat() {
+        isOpen = !isOpen;
+        fab.classList.toggle('sh-open', isOpen);
+        chatWin.classList.toggle('sh-open', isOpen);
+        if (isOpen) {
+            badgeEl.classList.add('sh-hide');
+            inp.focus();
+            if (!hasWelcomed) {
+                hasWelcomed = true;
+                setTimeout(function() {
+                    addAI('नमस्ते! 🏠 Savita Homelands Jaipur में आपका स्वागत है।\n\nमैं आपको जयपुर में JDA Approved प्लॉट्स के बारे में बता सकता हूँ। क्या जानना चाहेंगे आप?');
+                }, 400);
+            }
+        }
+    }
+
+    // ============================================================
+    // MESSAGES
+    // ============================================================
+    function addMsg(role, text) {
+        var div = document.createElement('div');
+        div.className = 'sh-msg' + (role === 'user' ? ' sh-usr' : '');
+        var bub = document.createElement('div');
+        bub.className = 'sh-mb';
+        var html = escHtml(text).replace(/\n/g, '<br>').replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:' + (role === 'user' ? '#d1fae5' : '#059669') + ';text-decoration:underline;">$1</a>');
+        bub.innerHTML = html;
+        div.appendChild(bub);
+        var tm = document.createElement('div');
+        tm.className = 'sh-mt';
+        tm.textContent = timeStr();
+        div.appendChild(tm);
+        msgArea.appendChild(div);
+        scrollDown();
+    }
+
+    function addSaveLead(phone, name) {
+        var c = document.createElement('div');
+        c.style.cssText = 'display:flex;flex-direction:column;align-items:flex-start;margin-bottom:12px;animation:shMsgIn .35s cubic-bezier(.34,1.56,.64,1)';
+        var btn = document.createElement('button');
+        btn.className = 'sh-slb';
+        btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> लीड सेव करें — ग्राहक जानकारी भेजें';
+        btn.onclick = function() {
+            openLead(phone, name);
+            btn.classList.add('sh-ok');
+            btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> लीड सेव हो गया!';
+        };
+        c.appendChild(btn);
+        msgArea.appendChild(c);
+        scrollDown();
+    }
+
+    function detectContact(text) {
+        var ph = text.match(/(?:\+91[-\s]?|0)?[6-9]\d{9}/g) || [];
+        var nm = text.match(/(?:मेरा नाम|my name is|i am|मैं हूँ|नाम)\s+([^\s,]+(?:\s+[^\s,]+){0,2})/i);
+        return { hasPhone: ph.length > 0, phone: ph[0] || '', name: nm ? nm[1] : '' };
+    }
+
+    function addAI(text) {
+        chatMessages.push({ role: 'assistant', content: text });
+        addMsg('assistant', text);
+        var all = chatMessages.map(function(m) { return m.content; }).join(' ');
+        var ci = detectContact(all);
+        if (ci.hasPhone || ci.name) {
+            setTimeout(function() { addSaveLead(ci.phone, ci.name); }, 500);
+        }
+    }
+
+    // ============================================================
+    // SEND
+    // ============================================================
+    function send(text) {
+        if (!text || !text.trim() || isTyping) return;
+        text = text.trim();
+        if (welSec) welSec.style.display = 'none';
+        chatMessages.push({ role: 'user', content: text });
+        addMsg('user', text);
+        inp.value = '';
+        isTyping = true;
+        typEl.classList.add('sh-on');
+        stTx.textContent = 'टाइप कर रहा है...';
+        sendBtn.classList.add('sh-dis');
+        scrollDown();
+
+        fetch(API_URL + '/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages: chatMessages })
+        })
+        .then(function(r) { if (!r.ok) throw new Error('err'); return r.json(); })
+        .then(function(d) {
+            isTyping = false;
+            typEl.classList.remove('sh-on');
+            stTx.textContent = 'ऑनलाइन • तुरंत जवाब देगी';
+            sendBtn.classList.remove('sh-dis');
+            if (d.message) addAI(d.message);
+            else if (d.error) addMsg('assistant', '⚠️ ' + d.error);
+        })
+        .catch(function() {
+            isTyping = false;
+            typEl.classList.remove('sh-on');
+            stTx.textContent = 'ऑनलाइन • तुरंत जवाब देगी';
+            sendBtn.classList.remove('sh-dis');
+            var e = document.createElement('div');
+            e.className = 'sh-er';
+            e.textContent = '⚠️ कनेक्शन समस्या। कृपया विनोद जी से 8619384178 पर संपर्क करें।';
+            msgArea.appendChild(e);
+            scrollDown();
+        });
+    }
+
+    // ============================================================
+    // LEAD MODAL
+    // ============================================================
+    function openLead(phone, name) {
+        var phIn = container.querySelector('.sh-lp');
+        var nmIn = container.querySelector('.sh-ln');
+        if (phone) phIn.value = phone;
+        if (name) nmIn.value = name;
+        leadOvl.classList.add('sh-on');
+    }
+
+    function closeLead() { leadOvl.classList.remove('sh-on'); }
+
+    leadCnl.addEventListener('click', closeLead);
+    leadOvl.addEventListener('click', function(e) { if (e.target === leadOvl) closeLead(); });
+
+    leadSub.addEventListener('click', function() {
+        var name = container.querySelector('.sh-ln').value.trim();
+        var phone = container.querySelector('.sh-lp').value.trim();
+        var budget = container.querySelector('.sh-lg').value.trim();
+        var loc = container.querySelector('.sh-ll').value.trim();
+        if (!name || !phone) { alert('नाम और फ़ोन नंबर ज़रूरी है!'); return; }
+        leadSub.textContent = 'सेव हो रहा है...';
+        leadSub.disabled = true;
+        var summary = chatMessages.map(function(m) { return (m.role === 'user' ? 'ग्राहक: ' : 'AI: ') + m.content; }).join('\n');
+        fetch(API_URL + '/api/leads', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: name, phone: phone, budget: budget || null, preferredLocation: loc || null, message: summary.substring(0, 500), source: 'AI Chat Widget' })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function() {
+            leadSub.textContent = '✅ लीड सेव हो गया!';
+            setTimeout(function() {
+                closeLead();
+                leadSub.textContent = '✅ लीड सेव करें';
+                leadSub.disabled = false;
+                container.querySelector('.sh-ln').value = '';
+                container.querySelector('.sh-lp').value = '';
+                container.querySelector('.sh-lg').value = '';
+                container.querySelector('.sh-ll').value = '';
+            }, 1200);
+        })
+        .catch(function() {
+            alert('लीड सेव करने में समस्या हुई। कृपया फिर से प्रयास करें।');
+            leadSub.textContent = '✅ लीड सेव करें';
+            leadSub.disabled = false;
+        });
+    });
+
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
+    fab.addEventListener('click', toggleChat);
+    closeBtn.addEventListener('click', toggleChat);
+    sendBtn.addEventListener('click', function() { send(inp.value); });
+    inp.addEventListener('keydown', function(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(inp.value); } });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && isOpen) toggleChat(); });
+
+    // Quick reply buttons
+    var qrBtns = container.querySelectorAll('.sh-qrb[data-q]');
+    for (var i = 0; i < qrBtns.length; i++) {
+        (function(b) {
+            b.addEventListener('click', function() { send(b.getAttribute('data-q')); });
+        })(qrBtns[i]);
+    }
+
+    // Phone call button
+    var callBtn = container.querySelector('.sh-qrb[data-call]');
+    if (callBtn) {
+        callBtn.addEventListener('click', function() { window.open('tel:+918619384178', '_self'); });
+    }
+
+})();

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savita Homelands Chat Widget Preview</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            font-family: Manrope, "Segoe UI", Arial, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(16, 185, 129, 0.18), transparent 34%),
+                radial-gradient(circle at bottom right, rgba(13, 148, 136, 0.12), transparent 38%),
+                #f8fafc;
+            color: #0f172a;
+        }
+
+        .preview-card {
+            width: min(720px, 100%);
+            padding: 28px;
+            border-radius: 28px;
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 28px 80px rgba(15, 23, 42, 0.14);
+            border: 1px solid rgba(148, 163, 184, 0.16);
+        }
+
+        .preview-card h1 {
+            margin: 0 0 10px;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+        }
+
+        .preview-card p {
+            margin: 0 0 14px;
+            line-height: 1.7;
+            color: #475569;
+        }
+
+        .preview-list {
+            margin: 20px 0 0;
+            padding-left: 18px;
+            color: #334155;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <main class="preview-card">
+        <h1>Chat Widget Preview</h1>
+        <p>This page loads the same chatbot embed used on the website, so you can test the real widget in one place.</p>
+        <p>The current setup uses local fallback replies and sends lead saves to Formspree, so it stays usable even without a separate chat API.</p>
+        <ol class="preview-list">
+            <li>Open the floating chat button in the bottom-right corner.</li>
+            <li>Try quick replies like <strong>JDA Approved plots</strong> or <strong>Free site visit</strong>.</li>
+            <li>Share a phone number in chat and the lead save prompt will appear.</li>
+        </ol>
+    </main>
+
+    <script>
+        window.SH_CHAT_FORM_ENDPOINT = 'https://formspree.io/f/xykbzggk';
+        window.SH_CHAT_PHONE = '8619384178';
+        window.SH_CHAT_WHATSAPP = '918619384178';
+        window.SH_CHAT_OPEN_WHATSAPP_ON_LEAD = 'true';
+        window.SH_CHAT_BRAND_NAME = 'Savita Homelands Jaipur';
+        window.SH_CHAT_HEADER_TITLE = 'Savita Homelands-Jaipur';
+        window.SH_CHAT_LOGO_URL = 'images/SavitaHomelandslogo.jpg';
+        window.SH_CHAT_DEFAULT_LANGUAGE = 'hinglish';
+    </script>
+    <script src="./embed-script (1).js"></script>
+</body>
+</html>
