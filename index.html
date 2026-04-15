@@ -212,6 +212,15 @@
                             <input id="guide-whatsapp" name="whatsapp" type="tel" inputmode="tel" placeholder="अपना WhatsApp नंबर लिखें" required>
                         </div>
 
+                        <div class="form-group">
+                            <label for="guide-pdf-select" id="guidePdfLabel">PDF चुनें</label>
+                            <select id="guide-pdf-select" name="pdf_type" required>
+                                <option value="">PDF चुनें</option>
+                                <option value="jda-checklist">JDA सुरक्षा चेकलिस्ट</option>
+                                <option value="jaipur-master-plan">जयपुर मास्टर डेवलपमेंट प्लान 2025</option>
+                            </select>
+                        </div>
+
                         <button class="btn btn-primary btn-full" id="guideSubmitButton" type="submit">PDF डाउनलोड करें</button>
                         <p class="form-note" id="guideFormNote" aria-live="polite">हम आपकी जानकारी केवल guide share करने और safe plot options बताने के लिए उपयोग करेंगे।</p>
                         <a class="guide-manual-link" id="guideManualDownload" href="downloads/savita-homelands-jda-checklist-guide.pdf" download="savita-homelands-jda-checklist-guide.pdf" hidden>अगर PDF अपने आप डाउनलोड न हो, तो यहां क्लिक करें</a>

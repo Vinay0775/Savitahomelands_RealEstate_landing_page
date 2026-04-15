@@ -1435,6 +1435,31 @@ body.lang-hi .hero__lead {
     outline: none;
 }
 
+.form-group select {
+    width: 100%;
+    padding: 1rem 1.05rem;
+    border: 1px solid rgba(16, 35, 58, 0.14);
+    border-radius: 16px;
+    color: var(--ink);
+    background: #fcfaf7;
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.form-group select:focus {
+    border-color: rgba(208, 163, 71, 0.9);
+    box-shadow: 0 0 0 4px rgba(208, 163, 71, 0.14);
+    outline: none;
+}
+
+.form-group select option {
+    background: #fcfaf7;
+    color: var(--ink);
+    padding: 0.5rem;
+}
+
 .form-note {
     margin-top: 1rem;
     font-size: 0.92rem;

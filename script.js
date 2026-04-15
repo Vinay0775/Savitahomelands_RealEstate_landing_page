@@ -87,7 +87,12 @@ translations.hi.guideLead = {
     formBadge: "Free Download",
     formTitle: "Download Free PDF Guide",
     formDescription: "अपना नाम और WhatsApp नंबर भरें। PDF submit करते ही डाउनलोड हो जाएगी और आपकी inquiry हमारे पास lead के रूप में आ जाएगी।",
-    labels: ["नाम", "WhatsApp नंबर"],
+    labels: ["नाम", "WhatsApp नंबर", "PDF चुनें"],
+    labelPdfSelect: "PDF चुनें",
+    pdfOptions: [
+        { value: "jda-checklist", text: "JDA सुरक्षा चेकलिस्ट" },
+        { value: "jaipur-master-plan", text: "जयपुर मास्टर डेवलपमेंट प्लान 2025" }
+    ],
     placeholders: ["अपना नाम लिखें", "अपना WhatsApp नंबर लिखें"],
     submit: "PDF डाउनलोड करें",
     buttonLoading: "PDF तैयार हो रही है...",
@@ -454,7 +459,12 @@ translations.en.guideLead = {
     formBadge: "Free Download",
     formTitle: "Download Free PDF Guide",
     formDescription: "Enter your name and WhatsApp number. The PDF will start downloading right after you submit the form.",
-    labels: ["Name", "WhatsApp Number"],
+    labels: ["Name", "WhatsApp Number", "Select PDF"],
+    labelPdfSelect: "Select PDF",
+    pdfOptions: [
+        { value: "jda-checklist", text: "JDA Safety Checklist" },
+        { value: "jaipur-master-plan", text: "Jaipur Master Development Plan 2025" }
+    ],
     placeholders: ["Enter your name", "Enter your WhatsApp number"],
     submit: "Download PDF Guide",
     buttonLoading: "Preparing your PDF...",
@@ -753,6 +763,19 @@ const guideSubjectInput = guideForm ? guideForm.querySelector('input[name="_subj
 const guideFormNote = document.getElementById("guideFormNote");
 const guideSubmitButton = document.getElementById("guideSubmitButton");
 const guideManualDownload = document.getElementById("guideManualDownload");
+
+// PDF Mapping
+const pdfMap = {
+    "jda-checklist": {
+        url: "downloads/savita-homelands-jda-checklist-guide.pdf",
+        fileName: "savita-homelands-jda-checklist-guide.pdf"
+    },
+    "jaipur-master-plan": {
+        url: "downloads/जयपुर मास्टर डेवलपमेंट प्लान 2025.pdf",
+        fileName: "Jaipur-Master-Development-Plan-2025.pdf"
+    }
+};
+
 const guideDownloadUrl = "downloads/savita-homelands-jda-checklist-guide.pdf";
 
 const setText = (node, value) => {
@@ -1025,6 +1048,15 @@ if (guideForm) {
         const lang = document.documentElement.lang === "en" ? "en" : "hi";
         const guideCopy = translations[lang].guideLead;
         const formData = new FormData(guideForm);
+        
+        // Get selected PDF type
+        const pdfType = formData.get("pdf_type");
+        if (!pdfType || !pdfMap[pdfType]) {
+            setStatusNoteState(guideFormNote, guideCopy.error, "error");
+            return;
+        }
+        
+        const selectedPdf = pdfMap[pdfType];
 
         if (guideSubmitButton) {
             guideSubmitButton.disabled = true;
@@ -1048,7 +1080,7 @@ if (guideForm) {
                 throw new Error("Guide form submission failed");
             }
 
-            triggerFileDownload(guideDownloadUrl, guideCopy.fileName);
+            triggerFileDownload(selectedPdf.url, selectedPdf.fileName);
             guideForm.reset();
 
             if (guideManualDownload) {
